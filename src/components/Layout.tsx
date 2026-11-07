@@ -14,6 +14,9 @@ export function Layout() {
           >
             LogiTrack
           </Typography>
+          <Button color="inherit" component={RouterLink} to="/envios">
+            Envíos
+          </Button>
           <Button color="inherit" component={RouterLink} to="/repartidores">
             Repartidores
           </Button>
