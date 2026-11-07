@@ -1,6 +1,8 @@
 import type { RouteObject } from 'react-router-dom'
 import { createBrowserRouter } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { CouriersListPage } from './features/couriers/CouriersListPage'
+import { MyCourierProfilePage } from './features/couriers/MyCourierProfilePage'
 import { ForbiddenPage } from './pages/ForbiddenPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
@@ -12,6 +14,8 @@ export const routes: RouteObject[] = [
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/login', element: <LoginPage /> },
+      { path: '/repartidores', element: <CouriersListPage /> },
+      { path: '/mi-perfil', element: <MyCourierProfilePage /> },
       { path: '/forbidden', element: <ForbiddenPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toApiError } from './apiError'
 
 /**
  * Única instancia de Axios de la app. Todas las llamadas al backend pasan por acá.
@@ -9,3 +10,14 @@ export const http = axios.create({
   headers: { 'Content-Type': 'application/json' },
   timeout: 10000,
 })
+
+http.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status
+    if (status === 401 || status === 403) {
+      return Promise.reject(error)
+    }
+    return Promise.reject(toApiError(error))
+  },
+)
