@@ -74,7 +74,7 @@ export function toApiError(error: unknown): ApiError {
 
   const status = error.response.status
   const data = error.response.data as BackendErrorPayload | undefined
-  const backendMessage = data?.detail ?? data?.message ?? data?.title
+  const backendMessage = data?.detail ?? data?.message ?? data?.title ?? data?.error
   const errores = parseValidationErrors(data)
 
   if (status === 503) {
@@ -85,6 +85,19 @@ export function toApiError(error: unknown): ApiError {
     return {
       status,
       mensaje: backendMessage ?? 'Error interno del servidor. Intentá nuevamente más tarde.',
+    }
+  }
+  if (status === 401) {
+    return {
+      status,
+      mensaje: backendMessage ?? 'Credenciales incorrectas.',
+    }
+  }
+
+  if (status === 403) {
+    return {
+      status,
+      mensaje: backendMessage ?? 'No tenés permisos para realizar esta operación.',
     }
   }
 

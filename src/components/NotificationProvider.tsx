@@ -1,5 +1,17 @@
-import { Alert, type AlertColor, Snackbar } from '@mui/material'
-import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from 'react'
+import {
+  Alert,
+  type AlertColor,
+  Snackbar,
+} from '@mui/material'
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 interface NotificationContextValue {
   success: (message: string) => void
@@ -20,6 +32,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     setOpen(true)
   }, [])
 
+  // Escucha los errores globales de autenticación generados por Axios.
+  useEffect(() => {
+    const handleUnauthorized = (event: Event) => {
+      const customEvent = event as CustomEvent<{ message: string }>
+      show('error', customEvent.detail.message)
+    }
+
+    window.addEventListener('auth:unauthorized', handleUnauthorized)
+
+    return () => {
+      window.removeEventListener('auth:unauthorized', handleUnauthorized)
+    }
+  }, [show])
+
   const value = useMemo<NotificationContextValue>(
     () => ({
       success: (msg) => show('success', msg),
@@ -32,6 +58,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   return (
     <NotificationContext.Provider value={value}>
       {children}
+
       <Snackbar
         open={open}
         autoHideDuration={4500}
@@ -53,8 +80,12 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
 export function useNotify(): NotificationContextValue {
   const ctx = useContext(NotificationContext)
+
   if (!ctx) {
-    throw new Error('useNotify debe utilizarse dentro de un NotificationProvider')
+    throw new Error(
+      'useNotify debe utilizarse dentro de un NotificationProvider',
+    )
   }
+
   return ctx
 }
