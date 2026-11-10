@@ -1,3 +1,6 @@
+
+/** PANTALLA PRINCIPAL DE REPARTIDORES */
+
 import {
   Box,
   Button,
@@ -108,7 +111,7 @@ export function CouriersListPage() {
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Vehículo</TableCell>
-                <TableCell>Estado</TableCell>
+                <TableCell align='center'>Estado</TableCell>
                 <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -125,19 +128,35 @@ export function CouriersListPage() {
                     <TableCell>{courier.nombre}</TableCell>
                     <TableCell>{courier.tipoVehiculo}</TableCell>
                     <TableCell>
-                      <Chip
-                        label={courier.estado}
-                        color={courier.estado === 'ACTIVO' ? 'success' : 'default'}
-                        size="small"
-                      />
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Chip
+                          label={courier.estado}
+                          color={courier.estado === 'ACTIVO' ? 'success' : 'default'}
+                          size="small"
+                        />
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          onClick={() => setDetailId(courier.id)}
+                        >
+                          Detalle
+                        </Button>
+                      </Stack>
                     </TableCell>
                     <TableCell align="right">
                       <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end' }}>
-                        <Button size="small" onClick={() => setDetailId(courier.id)}>
-                          Detalle / Disponibilidad
-                        </Button>
                         <Button
                           size="small"
+                          variant="contained"
+                          color="primary"
                           onClick={() => {
                             setEditingCourier(courier)
                             setFormOpen(true)
@@ -147,6 +166,7 @@ export function CouriersListPage() {
                         </Button>
                         <Button
                           size="small"
+                          variant="contained"
                           color="warning"
                           disabled={busyId === courier.id}
                           onClick={() => handleToggleEstado(courier)}
@@ -155,6 +175,7 @@ export function CouriersListPage() {
                         </Button>
                         <Button
                           size="small"
+                          variant="contained"
                           color="error"
                           disabled={busyId === courier.id}
                           onClick={() => setDeletingCourier(courier)}

@@ -1,3 +1,4 @@
+
 /** PANTALLA PRINCIPAL DE ENVÍOS */
 
 import {
@@ -139,17 +140,29 @@ export function ShipmentsListPage() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+          <Table
+            sx={{
+              minWidth: 900,
+              tableLayout: 'fixed',
+              '& th, & td': {
+                verticalAlign: 'middle',
+                py: 2,
+              },
+            }}
+          >
             <TableHead>
               <TableRow>
-                <TableCell>Código</TableCell>
-                <TableCell>Cliente</TableCell>
-                <TableCell>Origen → Destino</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell align="right">Acciones</TableCell>
+                <TableCell sx={{ width: '13%' }}>Código</TableCell>
+                <TableCell sx={{ width: '18%' }}>Cliente</TableCell>
+                <TableCell sx={{ width: '23%' }}>Origen → Destino</TableCell>
+                <TableCell sx={{ width: '13%' }}>Estado</TableCell>
+                <TableCell align="right" sx={{ width: '33%' }}>
+                  Acciones
+                </TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {filteredShipments.length === 0 ? (
                 <TableRow>
@@ -165,12 +178,30 @@ export function ShipmentsListPage() {
                       : []
 
                   return (
-                    <TableRow key={shipment.id}>
-                      <TableCell sx={{ fontWeight: 600 }}>{shipment.codigoSeguimiento}</TableCell>
-                      <TableCell>{shipment.clienteNombre}</TableCell>
-                      <TableCell>
+                    <TableRow
+                      key={shipment.id}
+                      hover
+                      sx={{
+                        '&:last-child td': { borderBottom: 0 },
+                      }}
+                    >
+                      <TableCell
+                        sx={{
+                          fontWeight: 600,
+                          overflowWrap: 'anywhere',
+                        }}
+                      >
+                        {shipment.codigoSeguimiento}
+                      </TableCell>
+
+                      <TableCell sx={{ overflowWrap: 'anywhere' }}>
+                        {shipment.clienteNombre}
+                      </TableCell>
+
+                      <TableCell sx={{ overflowWrap: 'anywhere' }}>
                         {shipment.origen.ciudad} → {shipment.destino.ciudad}
                       </TableCell>
+
                       <TableCell>
                         <Chip
                           label={shipment.estado}
@@ -178,20 +209,37 @@ export function ShipmentsListPage() {
                           size="small"
                         />
                       </TableCell>
+
                       <TableCell align="right">
-                        <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end' }}>
-                          <Button size="small" onClick={() => setDetailShipment(shipment)}>
-                            Detalle / Historial
+                        <Box
+                          sx={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(2, max-content)',
+                            justifyContent: 'end',
+                            alignItems: 'center',
+                            gap: 1,
+                          }}
+                        >
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="info"
+                            onClick={() => setDetailShipment(shipment)}
+                          >
+                            Historial
                           </Button>
 
                           {(isAdmin || showAllActionsForDemo) &&
                             shipment.estado === 'PENDIENTE' && (
                               <Button
                                 size="small"
-                                variant="outlined"
+                                variant="contained"
+                                color="primary"
                                 onClick={() => setAssigningShipment(shipment)}
                               >
-                                {shipment.courierId ? 'Reasignar repartidor' : 'Asignar repartidor'}
+                                {shipment.courierId
+                                  ? 'Reasignar repartidor'
+                                  : 'Asignar repartidor'}
                               </Button>
                             )}
 
@@ -199,6 +247,7 @@ export function ShipmentsListPage() {
                             <Button
                               key={t.next}
                               size="small"
+                              variant="contained"
                               color={t.next === 'CANCELADO' ? 'error' : 'primary'}
                               disabled={busyId === shipment.id}
                               onClick={() => handleChangeEstado(shipment, t.next)}
@@ -206,7 +255,7 @@ export function ShipmentsListPage() {
                               {t.label}
                             </Button>
                           ))}
-                        </Stack>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   )
@@ -231,7 +280,8 @@ export function ShipmentsListPage() {
 
       <ShipmentDetailDialog
         shipment={detailShipment}
-        onClose={() => setDetailShipment(null)} />
+        onClose={() => setDetailShipment(null)}
+      />
     </Box>
   )
 }
