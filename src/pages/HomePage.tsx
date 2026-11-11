@@ -60,7 +60,7 @@ export function HomePage() {
                 transition: 'all 180ms ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  borderColor: 'primary.main',
+                  borderColor: 'secondary.main',
                 },
               }}
             >

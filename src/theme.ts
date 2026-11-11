@@ -4,16 +4,16 @@ export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#68FD9D',
-      dark: '#35D979',
-      light: '#A4FFBF',
+      main: '#56d281',
+      dark: '#2cb564',
+      light: '#7abd8d',
       contrastText: '#10251A',
     },
-    secondary: {
-      main: '#F1C980',
-      dark: '#D9AD5C',
-      light: '#F8DFAF',
-      contrastText: '#30230D',
+   secondary: {
+      main: '#0077B6',
+      dark: '#005F8F',
+      light: '#8FD8F5',
+      contrastText: '#FFFFFF',
     },
     background: {
       default: '#F4F7F5',
@@ -60,7 +60,7 @@ export const theme = createTheme({
           backgroundColor: '#F4F7F5',
           scrollbarColor: '#C5D2C9 transparent',
           '& ::selection': {
-            backgroundColor: '#A4FFBF',
+            backgroundColor: '#8FD8F5',
             color: '#10251A',
           },
         },
@@ -76,6 +76,26 @@ export const theme = createTheme({
       borderRadius: 10,
       padding: '9px 18px',
       transition: 'all 180ms ease',
+      variants: [
+        {
+          props: { variant: 'text', color: 'primary' },
+          style: {
+            color: '#0077B6',
+            '&:hover': { backgroundColor: 'rgba(0, 119, 182, 0.08)' },
+          },
+        },
+        {
+          props: { variant: 'outlined', color: 'primary' },
+          style: {
+            color: '#0077B6',
+            borderColor: '#0077B6',
+            '&:hover': {
+              borderColor: '#005F8F',
+              backgroundColor: 'rgba(0, 119, 182, 0.08)',
+            },
+          },
+        },
+      ],
     },
     contained: {
       '&:hover': {
@@ -113,16 +133,36 @@ export const theme = createTheme({
           borderRadius: 10,
           backgroundColor: '#FFFFFF',
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#68FD9D',
+            borderColor: '#8FD8F5',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#35D979',
+            borderColor: '#0077B6',
             borderWidth: 2,
           },
         },
         notchedOutline: {
           borderColor: '#DCE5DF',
         },
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused': { color: '#0077B6' },
+        },
+      },
+    },
+
+    MuiCircularProgress: {
+      defaultProps: {
+        color: 'secondary',
+      },
+    },
+
+    MuiLink: {
+      defaultProps: {
+        color: 'secondary',
       },
     },
 
